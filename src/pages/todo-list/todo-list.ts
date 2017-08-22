@@ -1,3 +1,4 @@
+import { TodoFormPage } from './../todo-form/todo-form';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
@@ -23,7 +24,9 @@ export class TodoListPage {
   ];
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
-
+  goToForm(data) {
+    this.navCtrl.push(TodoFormPage, data);
+  }
   ionViewDidLoad() {
     console.log('ionViewDidLoad TodoListPage');
   }
