@@ -11,20 +11,37 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>todoList</ion-title>
-  </ion-navbar>
 
+  </ion-navbar>
+  <ion-segment [(ngModel)] = "filter">
+    <ion-segment-button value="all">ALL</ion-segment-button>
+    <ion-segment-button value="done">DONE</ion-segment-button>
+    <ion-segment-button value="not done">NOT DONE</ion-segment-button>
+  </ion-segment>
 </ion-header>
 
 
 <ion-content padding>
+  <!-- <ion-item-divider>Mon filtre</ion-item-divider>
+  <button ion-button outline (click)="find(false)">Tâches pas finies</button>
+  <button ion-button outline (click)="find(true)">Tâches finies</button> -->
+
   <ion-list>
-    <ion-item *ngFor="let item of todos">
-        <ion-label (click)="goToForm(item)">{{ item.title }}</ion-label>
-        <ion-toggle [(ngModel)] = "item.done"></ion-toggle>
-    </ion-item>
+    <ion-item-divider color="danger">Liste des tâches</ion-item-divider>
+    <ion-item-sliding *ngFor="let item of filterTodo(); let pos = index">
+      <ion-item>
+        <ion-label (click)="goToForm(item, pos)">{{ item.title }}</ion-label>
+        <ion-toggle [(ngModel)]="item.done"></ion-toggle>
+      </ion-item>
+      <ion-item-options>
+        <button ion-button ion-icon-only color="danger" (click)="deleteTask(pos);">
+        <ion-icon name="trash"></ion-icon>
+      </button>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 </ion-content>
 
 <ion-footer padding>
-  <button ion-button block (click)="goToForm(null)">Nouvelle tâche</button>
+  <button ion-button block (click)="goToForm(null, -1)">Nouvelle tâche</button>
 </ion-footer>
