@@ -10,7 +10,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>todoList</ion-title>
+    <ion-title>Liste des tâches</ion-title>
 
   </ion-navbar>
   <ion-segment [(ngModel)] = "filter">
@@ -31,7 +31,7 @@
     <ion-item-sliding *ngFor="let item of filterTodo(); let pos = index">
       <ion-item>
         <ion-label (click)="goToForm(item, pos)">{{ item.title }}</ion-label>
-        <ion-toggle [(ngModel)]="item.done"></ion-toggle>
+        <ion-toggle [(ngModel)]="item.done" (ionChange)="persistTask()"></ion-toggle>
       </ion-item>
       <ion-item-options>
         <button ion-button ion-icon-only color="danger" (click)="deleteTask(pos);">

@@ -17,10 +17,16 @@ export class TodoFormPage {
   public task;
   public index: Number = -1;
 
+  public titleForm:String = 'Création';
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private events: Events) {
     // Récupération des données transmises par todo-list.ts
     this.task = this.navParams.get('task');
     this.index = this.navParams.get('index');
+
+    if (this.index >= 0) {
+      this.titleForm = 'Modification';
+    }
   }
 
   /**

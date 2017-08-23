@@ -2,6 +2,7 @@ import { TodoFilterPage } from './../todo-filter/todo-filter';
 import { TodoFormPage } from './../todo-form/todo-form';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, LoadingController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 /**
  * Generated class for the TodoListPage page.
@@ -29,18 +30,28 @@ export class TodoListPage {
   public filter = 'all';
   private loader;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private events: Events, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+     public events: Events, private loadingCtrl: LoadingController, public stotrage:Storage) {
+
+      stotrage.get('todos').then((data)=> {
+        if(data) {
+          data = JSON.parse(data);
+          this.todos = data;
+        }
+      });
     // Mise à jour d'une tâche
     // Inscription à l'événement 'task.create' 
     events.subscribe('task.update', (data)=>{
       data = JSON.parse(data);
       this.todos[data.index] = data.task;
+      this.persistTask();
     });
     // Création d'une nouvelle tâche
     // Inscription à l'événement 'task.create' 
     events.subscribe('task.create', (data)=>{
       data = JSON.parse(data);
       this.todos.push(data.task);
+      this.persistTask();
     });
           
   }
@@ -67,6 +78,7 @@ export class TodoListPage {
 
   deleteTask(index) {
     this.todos.splice(index, 1);
+    this.persistTask();
   }
 
   goToForm(data, pos) {
@@ -98,5 +110,9 @@ export class TodoListPage {
 
   closeLoading() {
     this.loader.dismiss();
+  }
+
+  persistTask() {
+    this.stotrage.set('todos', JSON.stringify(this.todos));
   }
 }
