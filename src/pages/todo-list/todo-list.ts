@@ -3,6 +3,7 @@ import { TodoFormPage } from './../todo-form/todo-form';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { ConfigProvider } from './../../providers/config/config';
 
 /**
  * Generated class for the TodoListPage page.
@@ -18,60 +19,64 @@ import { Storage } from '@ionic/storage';
 })
 export class TodoListPage {
   public todos = [
-    {title: 'sortir le chat', done: false},
-    {title: 'Trianguler les pyramides', done: false},
-    {title: 'Surélever l\'Atlantide', done: false},
-    {title: 'Nettoyer les écuries d\'Augias', done: false},
-    {title: 'Payer la dette greque', done: false}
+    { title: 'sortir le chat', done: false },
+    { title: 'Trianguler les pyramides', done: false },
+    { title: 'Surélever l\'Atlantide', done: false },
+    { title: 'Nettoyer les écuries d\'Augias', done: false },
+    { title: 'Payer la dette greque', done: false }
   ];
 
   // public todoFiltered = [];
 
-  public filter = 'all';
+  public filter;
   private loader;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-     public events: Events, private loadingCtrl: LoadingController, public stotrage:Storage) {
+    public events: Events, private loadingCtrl: LoadingController,
+    public stotrage: Storage, public config: ConfigProvider) {
 
-      stotrage.get('todos').then((data)=> {
-        if(data) {
-          data = JSON.parse(data);
-          this.todos = data;
-        }
-      });
+    // Définition de filter en fonction du provider
+    config.getFilter().then((data)=> {
+      this.filter = data;
+    });
+
+    // Récupération de la liste des todos
+    stotrage.get('todos').then((data) => {
+      if (data) {
+        data = JSON.parse(data);
+        this.todos = data;
+      }
+    });
     // Mise à jour d'une tâche
     // Inscription à l'événement 'task.create' 
-    events.subscribe('task.update', (data)=>{
+    events.subscribe('task.update', (data) => {
       data = JSON.parse(data);
       this.todos[data.index] = data.task;
       this.persistTask();
     });
     // Création d'une nouvelle tâche
     // Inscription à l'événement 'task.create' 
-    events.subscribe('task.create', (data)=>{
+    events.subscribe('task.create', (data) => {
       data = JSON.parse(data);
       this.todos.push(data.task);
       this.persistTask();
     });
-          
+
   }
 
-  find(status) {   
-    let newtab = this.todos.filter((item)=>item.done==status);
-    this.navCtrl.push(TodoFilterPage, {data:newtab});
+  find(status) {
+    let newtab = this.todos.filter((item) => item.done == status);
+    this.navCtrl.push(TodoFilterPage, { data: newtab });
   }
 
   filterTodo() {
-  let filtered = [];
-  // this.presentLoading();
+    let filtered = [];
 
-    switch(this.filter) {
-      case 'all':filtered = this.todos;break;
-      case 'done': filtered = this.todos.filter((item)=>item.done);break;
-      case 'not done': filtered = this.todos.filter((item)=>!item.done);break;
+    switch (this.filter) {
+      case 'all': filtered = this.todos; break;
+      case 'done': filtered = this.todos.filter((item) => item.done); break;
+      case 'not done': filtered = this.todos.filter((item) => !item.done); break;
     }
-
-    // this.closeLoading();
 
     return filtered;
   }
@@ -82,7 +87,7 @@ export class TodoListPage {
   }
 
   goToForm(data, pos) {
-    if(!data) {
+    if (!data) {
       data = {
         title: null,
         done: false
@@ -105,7 +110,7 @@ export class TodoListPage {
       content: "Please wait...",
       // duration: 3000
     });
-    this.loader.present();    
+    this.loader.present();
   }
 
   closeLoading() {
