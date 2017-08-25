@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 
+import { Camera, CameraOptions } from '@ionic-native/camera';
 /**
  * Generated class for the TodoFormPage page.
  *
@@ -19,7 +20,18 @@ export class TodoFormPage {
 
   public titleForm:String = 'Création';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private events: Events) {
+  private cameraOptions: CameraOptions = {
+    quality: 75,
+    targetWidth: 500,
+    targetHeight: 500,
+    destinationType: this.camera.DestinationType.DATA_URL,
+    encodingType: this.camera.EncodingType.JPEG,
+  };
+
+  // public imageData:String;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private events: Events,
+  private camera: Camera) {
     // Récupération des données transmises par todo-list.ts
     this.task = this.navParams.get('task');
     this.index = this.navParams.get('index');
@@ -53,4 +65,13 @@ export class TodoFormPage {
   ionViewDidLoad() {
   }
 
+  takePicture() {
+    this.camera.getPicture(this.cameraOptions).then((pictureData) => {
+      // Pour la sérialisation de l'image
+      // let base64Image = 'data:image/jpeg;base64,' + pictureData;
+      // ou sans la sérialisation
+      // this.imageData = pictureData;
+      this.task.imageData = pictureData;
+    });
+  }
 }

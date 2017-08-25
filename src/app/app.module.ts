@@ -16,6 +16,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import {IonicStorageModule} from '@ionic/storage';
 import { ConfigProvider } from '../providers/config/config';
 
+import { Camera, CameraOptions } from '@ionic-native/camera';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -24,7 +26,7 @@ import { ConfigProvider } from '../providers/config/config';
     TodoListPage,
     TodoFormPage,
     TodoFilterPage,
-    ConfigPage
+    ConfigPage,
   ],
   imports: [
     BrowserModule,
@@ -46,6 +48,7 @@ import { ConfigProvider } from '../providers/config/config';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ConfigProvider,
+    Camera    
   ]
 })
 export class AppModule {}

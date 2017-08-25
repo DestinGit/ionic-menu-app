@@ -90,8 +90,12 @@ export class TodoListPage {
     if (!data) {
       data = {
         title: null,
-        done: false
+        done: false,
       };
+    }
+
+    if(!data.hasOwnProperty('imageData')) {
+      data.imageData = null;
     }
 
     let params = {
