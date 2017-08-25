@@ -27,11 +27,27 @@ export class RandomUserListPage {
     this.http.get(this.url + '?results=10').subscribe(
       (response) => {
         console.log(response.json());
+        this.users = response.json().results;
       },
       (err) => {
         console.log(err);        
       }
     );
+  }
+
+  loadMoreUsers(evt) {
+    this.http.get(this.url + '?results=1000').subscribe(
+      (response) => {
+        console.log(response.json());
+        this.users = this.users.concat(response.json().results);
+        
+        evt.complete();
+      },
+      (err) => {
+        console.log(err);        
+      }
+    );
+    
   }
 
   ionViewDidLoad() {
