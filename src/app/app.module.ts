@@ -1,3 +1,4 @@
+import { HelloComponent } from './../components/hello/hello';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -18,7 +19,7 @@ import {IonicStorageModule} from '@ionic/storage';
 import { ConfigProvider } from '../providers/config/config';
 
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { HttpModule } from '@angular/http';
+import { HttpModule } from '@angular/http';   
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { HttpModule } from '@angular/http';
     TodoFormPage,
     TodoFilterPage,
     ConfigPage,
-    RandomUserListPage
+    RandomUserListPage,
+    HelloComponent
   ],
   imports: [
     BrowserModule,

@@ -24,7 +24,7 @@ export class RandomUserListPage {
   }
 
   loadUsers() {
-    this.http.get(this.url + '?results=10').subscribe(
+    this.http.get(this.url + '?results=5').subscribe(
       (response) => {
         console.log(response.json());
         this.users = response.json().results;
@@ -36,18 +36,31 @@ export class RandomUserListPage {
   }
 
   loadMoreUsers(evt) {
-    this.http.get(this.url + '?results=1000').subscribe(
+    this.http.get(this.url + '?results=5').subscribe(
       (response) => {
         console.log(response.json());
         this.users = this.users.concat(response.json().results);
-        
+
+        evt.complete();
+      },
+      (err) => {
+        console.log(err);        
+      }
+    );  
+  }
+
+  doRefresh(evt) {
+    this.http.get(this.url + '?results=5').subscribe(
+      (response) => {
+        console.log(response.json());
+        this.users = response.json().results.concat(this.users);
+
         evt.complete();
       },
       (err) => {
         console.log(err);        
       }
     );
-    
   }
 
   ionViewDidLoad() {
